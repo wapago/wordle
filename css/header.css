@@ -1,0 +1,32 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #d3d6da;
+  border-bottom: 1px solid #d3d6da;
+  margin-bottom: 20px;
+  padding: 10px 0 10px 0;
+}
+
+.menu-games img {
+  width: 25px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 50px;
+}
+
+.menu-options {
+  display: flex;
+}
+
+.menu-options img {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  cursor: pointer;
+}
