@@ -1,4 +1,19 @@
-const 정답 = "APPLE";
+const 배열 = [
+  "BEACH",
+  "MAPLE",
+  "TIGER",
+  "LEMON",
+  "HORSE",
+  "CLOUD",
+  "PLANT",
+  "OLIVE",
+  "TABLE",
+  "KNIFE",
+];
+
+let randomNumber = Math.floor(Math.random() * 10);
+
+const 정답 = 배열[randomNumber];
 
 let attempts = 0;
 let index = 0;
