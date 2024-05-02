@@ -41,9 +41,15 @@ function appStart() {
     clearInterval(timer);
   };
 
-  const handleEnterKey = () => {
+  const handleEnterKey = (event) => {
     let 맞은_개수 = 0;
     for (let i = 0; i < 5; i++) {
+      let keydownVal = keydownArray[i];
+
+      const clickedKey = document.querySelector(
+        `.each-key[data-key='${keydownVal}']`
+      );
+
       const block = document.querySelector(
         `.board-block[data-index='${attempts}${i}']`
       );
@@ -53,12 +59,56 @@ function appStart() {
 
       if (입력한_글자 === 정답_글자) {
         맞은_개수 += 1;
+        clickedKey.style.background = "#6AAA64";
         block.style.background = "#6AAA64";
-      } else if (정답.includes(입력한_글자)) block.style.background = "#C9B458";
-      else block.style.background = "#787C7E";
+      } else if (정답.includes(입력한_글자)) {
+        clickedKey.style.background = "#C9B458";
+        block.style.background = "#C9B458";
+      } else {
+        clickedKey.style.background = "#787C7E";
+        block.style.background = "#787C7E";
+      }
 
       block.style.color = "white";
+      clickedKey.style.color = "white";
     }
+    keydownArray = [];
+    if (맞은_개수 === 5) gameover();
+    else nextLine();
+  };
+
+  const handleEnterClick = (event) => {
+    let 맞은_개수 = 0;
+    for (let i = 0; i < 5; i++) {
+      let clickVal = clickedArray[i];
+
+      const clickedKey = document.querySelector(
+        `.each-key[data-key='${clickVal}']`
+      );
+
+      const block = document.querySelector(
+        `.board-block[data-index='${attempts}${i}']`
+      );
+
+      const 입력한_글자 = clickVal;
+      const 정답_글자 = 정답[i];
+
+      if (입력한_글자 === 정답_글자) {
+        맞은_개수 += 1;
+        clickedKey.style.background = "#6AAA64";
+        block.style.background = "#6AAA64";
+      } else if (정답.includes(입력한_글자)) {
+        clickedKey.style.background = "#C9B458";
+        block.style.background = "#C9B458";
+      } else {
+        block.style.background = "#787C7E";
+        clickedKey.style.background = "#787C7E";
+      }
+
+      block.style.color = "white";
+      clickedKey.style.color = "white";
+    }
+    clickedArray = [];
     if (맞은_개수 === 5) gameover();
     else nextLine();
   };
@@ -73,6 +123,8 @@ function appStart() {
     if (index !== 0) index -= 1;
   };
 
+  let keydownArray = [];
+
   const handleKeydown = (event) => {
     const key = event.key.toUpperCase();
     const keyCode = event.keyCode;
@@ -82,10 +134,36 @@ function appStart() {
 
     if (event.keyCode === 8) handleBackspace();
     else if (index === 5) {
-      if (event.key === "Enter") handleEnterKey();
+      if (event.key === "Enter") handleEnterKey(event);
       else return;
     } else if (65 <= keyCode && keyCode <= 90) {
+      keydownArray.push(key);
       thisBlock.innerText = key;
+      index += 1;
+    }
+  };
+
+  let clickedArray = [];
+
+  const handleClick = (event) => {
+    // 1. class="each-key" 만 감지할 것
+    const targetClass = event.target.className;
+    if (targetClass !== "each-key" && targetClass !== "backspace") return;
+
+    const clickVal = event.target.innerText;
+    const thisBlock = document.querySelector(
+      `.board-block[data-index='${attempts}${index}']`
+    );
+
+    if (targetClass === "backspace") {
+      handleBackspace();
+    } else if (index === 5) {
+      if (clickVal === "ENTER") {
+        handleEnterClick(event);
+      } else return;
+    } else {
+      clickedArray.push(clickVal);
+      thisBlock.innerText = clickVal;
       index += 1;
     }
   };
@@ -107,6 +185,7 @@ function appStart() {
 
   startTimer();
   window.addEventListener("keydown", handleKeydown); // 키보드를 "눌렀을때"(키보드를 눌렀다가 "뗐을 때" --> keyup)
+  window.addEventListener("click", handleClick);
 }
 
 appStart();
