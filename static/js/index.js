@@ -1,20 +1,3 @@
-const 배열 = [
-  "BEACH",
-  "MAPLE",
-  "TIGER",
-  "LEMON",
-  "HORSE",
-  "CLOUD",
-  "PLANT",
-  "OLIVE",
-  "TABLE",
-  "KNIFE",
-];
-
-let randomNumber = Math.floor(Math.random() * 10);
-
-const 정답 = 배열[randomNumber];
-
 let attempts = 0;
 let index = 0;
 let timer;
@@ -23,9 +6,11 @@ function appStart() {
   const displayGameover = () => {
     const div = document.createElement("div");
     div.innerText = "게임이 종료되었습니다.";
+    div.id = "correct";
     div.style =
       "display:flex; justify-content: center; align-items: center; position:absolute; top:40vh; left:38%;" +
       "background-color:white; width:200px; height:100px;";
+
     document.body.appendChild(div);
   };
 
@@ -41,8 +26,15 @@ function appStart() {
     clearInterval(timer);
   };
 
-  const handleEnterKey = (event) => {
+  const handleEnterKey = async (event) => {
     let 맞은_개수 = 0;
+
+    // 서버에서 정답을 받아오는 코드
+    const 응답 = await fetch("/answer"); // await 서버에서 요청을 받을때까지 기다림
+    console.log(응답);
+    const 정답 = await 응답.json();
+    console.log(정답);
+
     for (let i = 0; i < 5; i++) {
       let keydownVal = keydownArray[i];
 
